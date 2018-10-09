@@ -130,7 +130,7 @@ The first thing we do in that function is to check if this material has a normal
 
 Remember that the colour we get are the normal coordinates, but since they are stored as RGB values they are contained in the range \[0, 1\]. We need to transform them to be in the range \[-1, 1\], so we just multiply by two and subtract 1 . Then, we normalize that value and transform it to view model coordinate space \(as with the vertex normal\).
 
-And that’s all, we can use the returned value as the normal for that fragment in all the lightning calculations.
+And that’s all, we can use the returned value as the normal for that fragment in all the light calculations.
 
 In the `Renderer` class we need to create the normal map uniform, and in the `renderScene` method we need to set it up like this:
 
@@ -157,7 +157,7 @@ private void initRender() {
     }
     Texture normalMap = material.getNormalMap();
     if ( normalMap != null ) {
-        // Activate first texture bank
+        // Activate second texture bank
         glActiveTexture(GL_TEXTURE1);
         // Bind the texture
         glBindTexture(GL_TEXTURE_2D, normalMap.getId());
@@ -173,7 +173,7 @@ private void initRender() {
 
 As you can see we need to bind to each of the textures available and activate the associated texture unit in order to be able to work with more than one texture. In the `renderScene` method in the `Renderer` class we do not need to explicitly set up the uniform of the texture since it’s already contained in the `Material`.
 
-In order to show the improvements that normal maps provide, we have created an example that shows two quads side by side. The right quad has a texture map applied and the left one not. We also have removed the terrain, the skybox and the HUD and setup a directional light with can be changed with the left and right cursor keys so you can see the effect. We have modified the base source code a bit in order to support not having a skybox or a terrain. We have also clamped the light effect in the fragment shader in the rang \[0, 1\] to avoid over exposing effect of the image.
+In order to show the improvements that normal maps provide, we have created an example that shows two quads side by side. The right quad has a normal texture map applied and the left one not. We also have removed the terrain, the skybox and the HUD and setup a directional light with can be changed with the left and right mouse keys so you can see the effect. We have modified the base source code a bit in order to support not having a skybox or a terrain. We have also clamped the light effect in the fragment shader in the range \[0, 1\] to avoid over exposing effect of the image.
 
 The result is shown in the next figure.
 
